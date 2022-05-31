@@ -5,13 +5,13 @@
       type="text"
       class="searchbox__input"
     >
-    <button type="button" class="searchbox__btn" @click="fetchfakeData">
+    <button type="button" class="searchbox__btn" @click="fetchTweets">
       search
     </button>
   </div>
 </template>
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'TwitterSearchBox',
   data () {
@@ -40,9 +40,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setKeywordsForSearch']),
-    fetchfakeData () {
-      this.searchingResult = 'get it!' + this.keywordsForSearching
-    }
+    ...mapActions(['fetchTweets'])
   }
 }
 </script>

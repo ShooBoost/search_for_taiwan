@@ -58,5 +58,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  env: {
+    token: 'AAAAAAAAAAAAAAAAAAAAAKmLdAEAAAAA%2FIY6xTxE8r594IBL6BFp0gdq3kc%3DVfaUzKLyiv7mY9DQtmCwa5wEyQw59OlBkITlOaMQV2pCj26Eyw'
   }
 }
