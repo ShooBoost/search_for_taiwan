@@ -16,8 +16,6 @@ export default {
   name: 'TwitterSearchBox',
   data () {
     return {
-      keywordsForSearching: '',
-      searchingResult: []
     }
   },
   computed: {

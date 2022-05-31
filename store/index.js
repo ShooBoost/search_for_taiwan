@@ -3,7 +3,8 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       keywordsForSearch: '',
-      tweetsFromFetching: []
+      tweetsFromFetching: [],
+      isTaiwanOnlyShowing: false
     },
     getters: {
       apiUrl (state) {
