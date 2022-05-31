@@ -15,7 +15,16 @@ const createStore = () => {
         state.keywordsForSearch = payload
       },
       setTweetsFromFetching (state, payload) {
-        state.tweetsFromFetching = payload
+        payload.data.forEach((tweet) => {
+          const author = payload.includes.users.find((user) => {
+            return user.id === tweet.author_id
+          })
+          tweet.author_name = author.name
+          tweet.author_username = author.username
+          tweet.profile_image_url = author.profile_image_url
+        })
+        state.tweetsFromFetching = payload.data
+        // console.log('setTweetsFromFetching', state.tweetsFromFetching)
       }
     },
     actions: {
@@ -27,7 +36,7 @@ const createStore = () => {
               headers: { Authorization: `Bearer ${token}` }
             })
             context.commit('setTweetsFromFetching', await res)
-            // console.log('setTweetsFromFetching', await res)
+            // console.log('fetchTweets', await res)
           } catch (err) {
             console.log(err)
           }
