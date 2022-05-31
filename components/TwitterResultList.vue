@@ -1,34 +1,23 @@
 <template>
-  <div />
+  <ul>
+    <li v-for="tweet in tweets" :key="tweet.id">{{tweet.text}}</li>
+  </ul>
 </template>
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'TwitterSearchBox',
-  data () {
-    return {
-    }
-  },
   computed: {
     ...mapState([
-      'tweetsFromFetching', 'isTaiwanOnlyShowing'
+      'tweetsFromFetching', 'isTaiwanOnlyShowing', 'tweetsFromTaiwan'
     ]),
-    ...mapGetters([
-      ''
-    ])
-    // tweets () {
-    //   if (this.isTaiwanOnlyShowing) {
-    //     return this.tweetsFromFetching.filter()
-    //   } else {
-    //     return this.tweetsFromFetching
-    //   }
-    // }
-  },
-  mounted () {
-  },
-  methods: {
-    ...mapMutations(['']),
-    ...mapActions([''])
+    tweets () {
+      if (this.isTaiwanOnlyShowing) {
+        return this.tweetsFromTaiwan
+      } else {
+        return this.tweetsFromFetching.data
+      }
+    }
   }
 }
 </script>

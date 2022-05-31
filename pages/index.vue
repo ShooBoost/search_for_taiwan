@@ -1,6 +1,7 @@
 <template>
   <div>
     <TwitterSearchBox />
+    <TwitterResultList />
   </div>
 </template>
 

@@ -11,19 +11,12 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'TwitterSearchBox',
-  data () {
-    return {
-    }
-  },
   computed: {
     ...mapState([
       'keywordsForSearch'
-    ]),
-    ...mapGetters([
-      ''
     ]),
     keywords: {
       get () {
