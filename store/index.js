@@ -9,7 +9,7 @@ const createStore = () => {
     },
     getters: {
       apiUrl (state) {
-        return `http://cnekuoli.xyz:8000/2/tweets/search/recent?max_results=100&expansions=author_id,geo.place_id&place.fields=country,country_code&user.fields=profile_image_url&query=${state.keywordsForSearch}`
+        return `http://cnekuoli.xyz:8000/2/tweets/search/recent?tweet.fields=created_at&max_results=100&expansions=author_id,geo.place_id&place.fields=country,country_code&user.fields=profile_image_url&query=${state.keywordsForSearch}`
       }
     },
     mutations: {
