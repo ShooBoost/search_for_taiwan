@@ -1,7 +1,7 @@
 <template>
   <div>
     <input
-      v-model="keywordsForSearching"
+      v-model="keywords"
       type="text"
       class="searchbox__input"
     >
@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'TwitterSearchBox',
   data () {
@@ -22,12 +22,24 @@ export default {
   },
   computed: {
     ...mapState([
-      'name'
-    ])
+      'keywordsForSearch'
+    ]),
+    ...mapGetters([
+      ''
+    ]),
+    keywords: {
+      get () {
+        return this.keywordsForSearch
+      },
+      set (value) {
+        this.setKeywordsForSearch(value)
+      }
+    }
   },
   mounted () {
   },
   methods: {
+    ...mapMutations(['setKeywordsForSearch']),
     fetchfakeData () {
       this.searchingResult = 'get it!' + this.keywordsForSearching
     }
