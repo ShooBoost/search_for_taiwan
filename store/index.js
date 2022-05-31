@@ -16,6 +16,9 @@ const createStore = () => {
       setKeywordsForSearch (state, payload) {
         state.keywordsForSearch = payload
       },
+      setIsTaiwanOnlyShowing (state, payload) {
+        state.isTaiwanOnlyShowing = payload
+      },
       setTweetsFromTaiwan (state) {
         let tweetsFromTaiwan = []
         const tweetsInfo = state.tweetsFromFetching.includes
@@ -31,7 +34,7 @@ const createStore = () => {
           })
         }
         state.tweetsFromTaiwan = tweetsFromTaiwan
-        console.log('setTweetsFromTaiwan', state.tweetsFromTaiwan)
+        // console.log('setTweetsFromTaiwan', state.tweetsFromTaiwan)
       },
       setTweetsFromFetching (state, payload) {
         const tweets = payload.data
@@ -48,7 +51,7 @@ const createStore = () => {
         } else {
           state.tweetsFromFetching = { data: [] }
         }
-        console.log('setTweetsFromFetching', state.tweetsFromFetching)
+        // console.log('setTweetsFromFetching', state.tweetsFromFetching)
       }
     },
     actions: {

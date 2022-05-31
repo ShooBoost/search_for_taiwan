@@ -1,6 +1,8 @@
 <template>
   <ul>
-    <li v-for="tweet in tweets" :key="tweet.id">{{tweet.text}}</li>
+    <li v-for="tweet in tweets" :key="tweet.id">
+      {{ tweet.text }}
+    </li>
   </ul>
 </template>
 <script>

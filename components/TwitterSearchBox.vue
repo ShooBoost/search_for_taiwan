@@ -8,6 +8,8 @@
     <button type="button" class="searchbox__btn" @click="fetchTweets">
       search
     </button>
+    <input id="searchbox__checkbox" v-model="isTaiwan" type="checkbox">
+    <label for="searchbox__checkbox" /> 只顯示台灣地區推文
   </div>
 </template>
 <script>
@@ -16,7 +18,7 @@ export default {
   name: 'TwitterSearchBox',
   computed: {
     ...mapState([
-      'keywordsForSearch'
+      'keywordsForSearch', 'isTaiwanOnlyShowing'
     ]),
     keywords: {
       get () {
@@ -25,12 +27,20 @@ export default {
       set (value) {
         this.setKeywordsForSearch(value)
       }
+    },
+    isTaiwan: {
+      get () {
+        return this.isTaiwanOnlyShowing
+      },
+      set (value) {
+        this.setIsTaiwanOnlyShowing(value)
+      }
     }
   },
   mounted () {
   },
   methods: {
-    ...mapMutations(['setKeywordsForSearch']),
+    ...mapMutations(['setKeywordsForSearch', 'setIsTaiwanOnlyShowing']),
     ...mapActions(['fetchTweets'])
   }
 }
