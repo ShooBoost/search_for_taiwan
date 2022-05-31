@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="searchbox">
     <input
       v-model="keywords"
       type="text"
@@ -8,8 +8,8 @@
     <button type="button" class="searchbox__btn" @click="fetchTweets">
       search
     </button>
-    <input id="searchbox__checkbox" v-model="isTaiwan" type="checkbox">
-    <label for="searchbox__checkbox" /> 只顯示台灣地區推文
+    <input id="searchbox__checkbox" v-model="isTaiwan" type="checkbox" class="searchbox__checkbox">
+    <label for="searchbox__checkbox" class="searchbox__checklabel" /> 只顯示台灣地區推文
   </div>
 </template>
 <script>

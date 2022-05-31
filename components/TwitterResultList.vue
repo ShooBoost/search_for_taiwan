@@ -1,9 +1,6 @@
 <template>
-  <ul>
-    <li v-for="tweet in tweets" :key="tweet.id">
-      <!-- {{ tweet.text }} -->
-      <TweetCard :tweet="tweet" />
-    </li>
+  <ul class="twitterlist">
+      <TweetCard v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
   </ul>
 </template>
 <script>
