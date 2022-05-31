@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'TwitterSearchBox',
   data () {
@@ -18,6 +19,13 @@ export default {
       keywordsForSearching: '',
       searchingResult: []
     }
+  },
+  computed: {
+    ...mapState([
+      'name'
+    ])
+  },
+  mounted () {
   },
   methods: {
     fetchfakeData () {
