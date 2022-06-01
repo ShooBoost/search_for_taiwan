@@ -18,7 +18,7 @@ export default {
   name: 'TwitterSearchBox',
   computed: {
     ...mapState([
-      'keywordsForSearch', 'isTaiwanOnlyShowing', 'nextPage'
+      'keywordsForSearch', 'isTaiwanOnlyShowing', 'nextPage', 'isSameKeywords'
     ]),
     keywords: {
       get () {
@@ -43,7 +43,7 @@ export default {
     ...mapMutations(['setKeywordsForSearch', 'setIsTaiwanOnlyShowing']),
     ...mapActions(['fetchTweets']),
     search () {
-      const isNewKeywords = this.keywords !== this.nextPage.keywords
+      const isNewKeywords = !this.isSameKeywords
       if (isNewKeywords) {
         this.fetchTweets()
       }

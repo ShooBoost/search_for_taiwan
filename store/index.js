@@ -2,17 +2,18 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      keywordsForSearch: '',
+      keywordsForSearch: '台南',
       tweetsFromFetching: { meta: {} },
       tweetsFromTaiwan: [],
       isTaiwanOnlyShowing: false,
-      nextPage: { keywords: '', token: '' }
+      nextPage: { keywords: '', token: '' },
+      isSameKeywords: false
     },
     getters: {
       apiUrl (state) {
         const nextPageToken = state.nextPage.token
         const nextPageQuery = nextPageToken ? `next_token=${nextPageToken}&` : ''
-        return `http://cnekuoli.xyz:8000/2/tweets/search/recent?${nextPageQuery}tweet.fields=created_at&max_results=100&expansions=author_id,geo.place_id&place.fields=country,country_code&user.fields=profile_image_url&query=${state.keywordsForSearch}`
+        return `http://cnekuoli.xyz:8000/2/tweets/search/recent?${nextPageQuery}tweet.fields=created_at&max_results=10&expansions=author_id,geo.place_id&place.fields=country,country_code&user.fields=profile_image_url&query=${state.keywordsForSearch}`
       }
     },
     mutations: {
@@ -22,12 +23,15 @@ const createStore = () => {
       setIsTaiwanOnlyShowing (state, payload) {
         state.isTaiwanOnlyShowing = payload
       },
+      setIsSameKeyword (state) {
+        state.isSameKeyword = state.keywordsForSearch === state.nextPage.keywords
+      },
       setNextPage (state) {
-        const isSameKeywords = state.keywordsForSearch === state.nextPage.keywords
+        const isSameKeywords = state.isSameKeyword
         const nextPageToken = state.tweetsFromFetching.meta.next_token
         state.nextPage.token = isSameKeywords && nextPageToken ? nextPageToken : ''
         state.nextPage.keywords = state.keywordsForSearch
-        console.log(state.nextPage)
+        // console.log(state.nextPage)
       },
       setTweetsFromTaiwan (state) {
         let tweetsFromTaiwan = []
@@ -57,7 +61,14 @@ const createStore = () => {
             tweet.author_username = author.username
             tweet.profile_image_url = author.profile_image_url
           })
-        } state.tweetsFromFetching = payload
+        }
+        if (state.isSameKeyword) {
+          payload.data = [...state.tweetsFromFetching.data, ...tweets]
+          const oldPlaces = state.tweetsFromFetching.includes.places || []
+          const nowPlaces = payload.includes.places || []
+          payload.includes.places = [...oldPlaces, ...nowPlaces]
+        }
+        state.tweetsFromFetching = payload
         // console.log('setTweetsFromFetching', state.tweetsFromFetching)
       }
     },
@@ -65,6 +76,7 @@ const createStore = () => {
       async fetchTweets (context) {
         if (context.state.keywordsForSearch.trim()) {
           const token = process.env.token
+          context.commit('setIsSameKeyword')
           context.commit('setNextPage')
           try {
             const res = await this.$axios.$get(`${context.getters.apiUrl}`, {
