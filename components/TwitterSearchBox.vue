@@ -5,7 +5,7 @@
       type="text"
       class="searchbox__input"
     >
-    <button type="button" class="searchbox__btn" @click="fetchTweets">
+    <button type="button" class="searchbox__btn" @click="search">
       search
     </button>
     <input id="searchbox__checkbox" v-model="isTaiwan" type="checkbox" class="searchbox__checkbox">
@@ -18,7 +18,7 @@ export default {
   name: 'TwitterSearchBox',
   computed: {
     ...mapState([
-      'keywordsForSearch', 'isTaiwanOnlyShowing'
+      'keywordsForSearch', 'isTaiwanOnlyShowing', 'nextPage'
     ]),
     keywords: {
       get () {
@@ -41,7 +41,13 @@ export default {
   },
   methods: {
     ...mapMutations(['setKeywordsForSearch', 'setIsTaiwanOnlyShowing']),
-    ...mapActions(['fetchTweets'])
+    ...mapActions(['fetchTweets']),
+    search () {
+      const isNewKeywords = this.keywords !== this.nextPage.keywords
+      if (isNewKeywords) {
+        this.fetchTweets()
+      }
+    }
   }
 }
 </script>
