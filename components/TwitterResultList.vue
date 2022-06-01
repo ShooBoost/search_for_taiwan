@@ -1,7 +1,7 @@
 <template>
   <ul class="twitterlist">
     <TweetCard v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
-    <button type="button" v-if="isSameKeywords" @click="fetchTweets">
+    <button v-if="isSameKeywords" type="button" @click="fetchTweets">
       more
     </button>
   </ul>
@@ -12,13 +12,25 @@ export default {
   name: 'TwitterResultList',
   computed: {
     ...mapState([
-      'tweetsFromFetching', 'isTaiwanOnlyShowing', 'tweetsFromTaiwan', 'isSameKeywords'
+      'tweetsFromFetching',
+      'isTaiwanOnlyShowing',
+      'tweetsFromTaiwan',
+      'isSameKeywords'
     ]),
     tweets () {
       if (this.isTaiwanOnlyShowing) {
         return this.tweetsFromTaiwan
       } else {
         return this.tweetsFromFetching.data
+      }
+    }
+  },
+  mounted () {
+    const _this = this
+    window.onscroll = function () {
+      const twitterlist = document.querySelector('.twitterlist')
+      if (window.innerHeight + window.scrollY >= twitterlist.scrollHeight) {
+        _this.fetchTweets()
       }
     }
   },
