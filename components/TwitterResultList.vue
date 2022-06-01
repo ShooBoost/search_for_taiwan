@@ -1,7 +1,7 @@
 <template>
   <ul class="twitterlist">
     <TweetCard v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
-    <button type="button" @click="fetchTweets">
+    <button type="button" v-if="isSameKeywords" @click="fetchTweets">
       more
     </button>
   </ul>

@@ -26,17 +26,15 @@ const createStore = () => {
       },
       setIsFreeToFetch (state) {
         state.isFreeToFetch = !state.isFreeToFetch
-        console.log(`isFreeToFetch from ${!state.isFreeToFetch} to ${state.isFreeToFetch}`)
       },
-      setIsSameKeyword (state) {
-        state.isSameKeyword = state.keywordsForSearch === state.nextPage.keywords
+      setIsSameKeywords (state) {
+        state.isSameKeywords = state.keywordsForSearch === state.nextPage.keywords
       },
       setNextPage (state) {
-        const isSameKeywords = state.isSameKeyword
+        const isSameKeywords = state.isSameKeywords
         const nextPageToken = state.tweetsFromFetching.meta.next_token
         state.nextPage.token = isSameKeywords && nextPageToken ? nextPageToken : ''
         state.nextPage.keywords = state.keywordsForSearch
-        // console.log(state.nextPage)
       },
       setTweetsFromTaiwan (state) {
         let tweetsFromTaiwan = []
@@ -66,7 +64,7 @@ const createStore = () => {
             tweet.author_username = author.username
             tweet.profile_image_url = author.profile_image_url
           })
-          if (state.isSameKeyword) {
+          if (state.isSameKeywords) {
             payload.data = [...state.tweetsFromFetching.data, ...tweets]
             const oldPlaces = state.tweetsFromFetching.includes.places || []
             const nowPlaces = payload.includes.places || []
@@ -84,15 +82,15 @@ const createStore = () => {
         if (isFreeToFetch && isKeywordsExist) {
           const token = process.env.token
           context.commit('setIsFreeToFetch')
-          context.commit('setIsSameKeyword')
+          context.commit('setIsSameKeywords')
           context.commit('setNextPage')
           try {
             const res = await this.$axios.$get(`${context.getters.apiUrl}`, {
               headers: { Authorization: `Bearer ${token}` }
             })
-            // console.log('fetchTweets', await res)
             await context.commit('setTweetsFromFetching', res)
             await context.commit('setTweetsFromTaiwan')
+            context.commit('setIsSameKeywords')
             setTimeout(() => { context.commit('setIsFreeToFetch') }, 3000)
           } catch (err) {
             console.log(err)
