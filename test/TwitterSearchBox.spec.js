@@ -15,7 +15,8 @@ describe('TwitterSearchBox.vue', () => {
       isSameKeywords: false
     }
     mutations = {
-      setKeywordsForSearch: jest.fn()
+      setKeywordsForSearch: jest.fn(),
+      setIsTaiwanOnlyShowing: jest.fn()
     }
     actions = {
       fetchTweets: jest.fn()
@@ -44,5 +45,11 @@ describe('TwitterSearchBox.vue', () => {
     const searchBtn = wrapper.find('.searchbox__btn')
     searchBtn.trigger('click')
     expect(actions.fetchTweets).toHaveBeenCalled()
+  })
+  it('click taiwanOnly checkbox will commit "setIsTaiwanOnlyShowing"', () => {
+    const wrapper = shallowMount(TwitterSearchBox, { store, localVue })
+    const searchBtn = wrapper.find('.searchbox__checkbox')
+    searchBtn.setChecked()
+    expect(mutations.setIsTaiwanOnlyShowing).toHaveBeenCalled()
   })
 })
