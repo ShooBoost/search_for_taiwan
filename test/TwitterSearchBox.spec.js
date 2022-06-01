@@ -1,24 +1,48 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vuex from 'vuex'
 import TwitterSearchBox from '@/components/TwitterSearchBox.vue'
 
-describe('TwitterSearchBox', () => {
-  test('is a Vue instance', () => {
-    const wrapper = mount(TwitterSearchBox)
-    expect(wrapper.vm).toBeTruthy()
+const localVue = createLocalVue()
+localVue.use(Vuex)
+describe('TwitterSearchBox.vue', () => {
+  let state
+  let mutations
+  let actions
+  let store
+  beforeEach(() => {
+    state = {
+      keywordsForSearch: '',
+      isSameKeywords: false
+    }
+    mutations = {
+      setKeywordsForSearch: jest.fn()
+    }
+    actions = {
+      fetchTweets: jest.fn()
+    }
+    store = new Vuex.Store({
+      state,
+      mutations,
+      actions
+    })
   })
-  test('input initial to be empty', () => {
-    const wrapper = mount(TwitterSearchBox)
-    expect(wrapper.vm.keywordsForSearching).toBe('')
+  it('initial keywords is empty', () => {
+    const wrapper = shallowMount(TwitterSearchBox, { store, localVue })
+    expect(wrapper.vm.keywords).toBe('')
   })
-  test('taping in input will change keywordsForSearching', () => {
-    const wrapper = mount(TwitterSearchBox)
+  it('initial input is empty', () => {
+    const wrapper = shallowMount(TwitterSearchBox, { store, localVue })
+    expect(wrapper.find('.searchbox__input').text()).toBe('')
+  })
+  it('typing in input will commit setKeywordsForSearch', () => {
+    const wrapper = shallowMount(TwitterSearchBox, { store, localVue })
     wrapper.find('.searchbox__input').setValue('生煎包')
-    expect(wrapper.vm.keywordsForSearching).toBe('生煎包')
+    expect(mutations.setKeywordsForSearch).toHaveBeenCalled()
   })
-  test('click search button will change searchingResult', () => {
-    const wrapper = mount(TwitterSearchBox)
-    wrapper.find('.searchbox__input').setValue('生煎包')
-    wrapper.find('.searchbox__btn').trigger('click')
-    expect(wrapper.vm.searchingResult).toBe('get it!生煎包')
+  it('click search button will dispatches "fetchTweets"', () => {
+    const wrapper = shallowMount(TwitterSearchBox, { store, localVue })
+    const searchBtn = wrapper.find('.searchbox__btn')
+    searchBtn.trigger('click')
+    expect(actions.fetchTweets).toHaveBeenCalled()
   })
 })
