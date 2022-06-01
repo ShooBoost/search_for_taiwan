@@ -32,7 +32,7 @@ html, body {
 .twitterlist {
   padding: 0;
   @include desktop{
-    max-width: 750px;
+    width: 750px;
   }
 }
 .tweetcard{
