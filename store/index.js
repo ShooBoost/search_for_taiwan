@@ -2,12 +2,13 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      keywordsForSearch: '台南',
+      keywordsForSearch: '',
       tweetsFromFetching: { meta: {} },
       tweetsFromTaiwan: [],
       isTaiwanOnlyShowing: false,
       nextPage: { keywords: '', token: '' },
-      isSameKeywords: false
+      isSameKeywords: false,
+      isFreeToFetch: true
     },
     getters: {
       apiUrl (state) {
@@ -22,6 +23,10 @@ const createStore = () => {
       },
       setIsTaiwanOnlyShowing (state, payload) {
         state.isTaiwanOnlyShowing = payload
+      },
+      setIsFreeToFetch (state) {
+        state.isFreeToFetch = !state.isFreeToFetch
+        console.log(`isFreeToFetch from ${!state.isFreeToFetch} to ${state.isFreeToFetch}`)
       },
       setIsSameKeyword (state) {
         state.isSameKeyword = state.keywordsForSearch === state.nextPage.keywords
@@ -61,12 +66,12 @@ const createStore = () => {
             tweet.author_username = author.username
             tweet.profile_image_url = author.profile_image_url
           })
-        }
-        if (state.isSameKeyword) {
-          payload.data = [...state.tweetsFromFetching.data, ...tweets]
-          const oldPlaces = state.tweetsFromFetching.includes.places || []
-          const nowPlaces = payload.includes.places || []
-          payload.includes.places = [...oldPlaces, ...nowPlaces]
+          if (state.isSameKeyword) {
+            payload.data = [...state.tweetsFromFetching.data, ...tweets]
+            const oldPlaces = state.tweetsFromFetching.includes.places || []
+            const nowPlaces = payload.includes.places || []
+            payload.includes.places = [...oldPlaces, ...nowPlaces]
+          }
         }
         state.tweetsFromFetching = payload
         // console.log('setTweetsFromFetching', state.tweetsFromFetching)
@@ -74,8 +79,11 @@ const createStore = () => {
     },
     actions: {
       async fetchTweets (context) {
-        if (context.state.keywordsForSearch.trim()) {
+        const isFreeToFetch = context.state.isFreeToFetch
+        const isKeywordsExist = context.state.keywordsForSearch.trim()
+        if (isFreeToFetch && isKeywordsExist) {
           const token = process.env.token
+          context.commit('setIsFreeToFetch')
           context.commit('setIsSameKeyword')
           context.commit('setNextPage')
           try {
@@ -85,6 +93,7 @@ const createStore = () => {
             // console.log('fetchTweets', await res)
             await context.commit('setTweetsFromFetching', res)
             await context.commit('setTweetsFromTaiwan')
+            setTimeout(() => { context.commit('setIsFreeToFetch') }, 3000)
           } catch (err) {
             console.log(err)
           }
