@@ -1,4 +1,4 @@
-export const actions = {
+export default {
   async fetchTweets (context) {
     const isFreeToFetch = context.state.isFreeToFetch
     const isKeywordsExist = context.state.keywordsForSearch.trim()

@@ -1,4 +1,4 @@
-export const getters = {
+export default {
   apiUrl (state) {
     const nextPageToken = state.nextPage.token
     const nextPageQuery = nextPageToken ? `next_token=${nextPageToken}&` : ''

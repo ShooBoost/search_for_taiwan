@@ -1,4 +1,4 @@
-export const mutations = {
+export default {
   setKeywordsForSearch (state, payload) {
     state.keywordsForSearch = payload
   },

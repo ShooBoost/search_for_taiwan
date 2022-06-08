@@ -1,6 +1,6 @@
-import { getters } from './getters'
-import { mutations } from './mutations'
-import { actions } from './actions'
+// import getters from './getters'
+// import mutations from './mutations'
+// import actions from './actions'
 const store = {
   state () {
     return {
@@ -12,10 +12,10 @@ const store = {
       isSameKeywords: false,
       isFreeToFetch: true
     }
-  },
-  getters,
-  mutations,
-  actions
+  }
+  // getters,
+  // mutations,
+  // actions
 }
 
 export default store
